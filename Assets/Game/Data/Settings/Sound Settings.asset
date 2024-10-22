@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669f251194b14bb3a7e5f163eda7d3b0, type: 3}
+  m_Name: Sound Settings
+  m_EditorClassIdentifier: 
+  soundEmitterPrefab: {fileID: 8212187976655403131, guid: 0c01ae6110ebcc045a4b6c0aebaf581c, type: 3}
+  collectionCheck: 0
+  defaultCapacity: 1
+  maxPoolSize: 30
+  maxSoundInstances: 30
+  gameStartSoundData:
+    clip: {fileID: 8300000, guid: 80e7f605f4c156d48885d887ab559524, type: 3}
+    mixerGroup: {fileID: 24300002, guid: 0af908ee8646e1a4dbe9c1a7828cbbda, type: 2}
+    volume: 0.5
+    loop: 0
+    playOnAwake: 0
