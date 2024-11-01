@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Game.Scripts.Core.Panel
 {
     [RequireComponent(typeof(NodeCanvas))]
-    public class NodePanel : MonoBehaviour
+    public abstract class NodePanel : MonoBehaviour
     {
         [SerializeField] private PanelAnimations _panelAnimations = new();
         private Tween _showTween;
