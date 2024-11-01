@@ -5,18 +5,12 @@ using UnityEngine;
 
 namespace Game.Scripts.Core.Panel
 {
-    [RequireComponent(typeof(CanvasGroup))]
-    [RequireComponent(typeof(Canvas))]
     public abstract class PanelBase : MonoBehaviour
     {
         [SerializeField] private PanelAnimations _panelAnimations = new();
-        public RectTransform RectTransform { get; private set; }
-
-        private void Awake()
-        {
-            RectTransform = GetComponent<RectTransform>();
-        }
-
+        private Tween _showTween;
+        private Tween _hideTween;
+        
         public async UniTask Show(bool isImmediate)
         {
             OnOpening();
@@ -29,7 +23,7 @@ namespace Game.Scripts.Core.Panel
                 return;
             }
 
-            Tween.CompleteAll(transform);
+            _showTween.Complete();
 
             if (isImmediate)
             {
