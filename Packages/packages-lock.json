@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.braty.brui": {
+      "version": "https://github.com/boraty14/Brui.git?path=/Assets/Brui",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "a4d5c0b809ff671ccbf8487c6db61eda86da45da"
+    },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
       "depth": 0,
