@@ -130,7 +130,6 @@ namespace Game.Scripts.Core.Unit
 
         public void Dispose()
         {
-            _pool?.Dispose();
             ReleaseUnit();
         }
     }
