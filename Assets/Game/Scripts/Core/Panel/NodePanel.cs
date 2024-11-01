@@ -1,16 +1,19 @@
 using System;
+using Brui.Components;
 using Cysharp.Threading.Tasks;
 using PrimeTween;
 using UnityEngine;
 
 namespace Game.Scripts.Core.Panel
 {
-    public abstract class PanelBase : MonoBehaviour
+    [RequireComponent(typeof(NodeCanvas))]
+    public class NodePanel : MonoBehaviour
     {
         [SerializeField] private PanelAnimations _panelAnimations = new();
         private Tween _showTween;
         private Tween _hideTween;
-        
+        private NodeCanvas _nodeCanvas;
+
         public async UniTask Show(bool isImmediate)
         {
             OnOpening();
@@ -27,17 +30,15 @@ namespace Game.Scripts.Core.Panel
 
             if (isImmediate)
             {
-                transform.localScale = openingAnimation.scaleSettings.endValue;
+                _nodeCanvas.transform.localScale = openingAnimation.scaleSettings.endValue;
                 OnOpened();
                 return;
             }
 
-            transform.localScale = openingAnimation.scaleSettings.startValue;
+            _nodeCanvas.transform.localScale = openingAnimation.scaleSettings.startValue;
 
-            var sequence = Sequence.Create()
-                .Group(Tween.Scale(transform, openingAnimation.scaleSettings));
-
-            await sequence.ToUniTask();
+            _showTween = Tween.Scale(_nodeCanvas.transform, openingAnimation.scaleSettings);
+            await _showTween.ToUniTask();
             OnOpened();
         }
 
@@ -53,22 +54,21 @@ namespace Game.Scripts.Core.Panel
                 return;
             }
 
-            Tween.CompleteAll(transform);
+            _hideTween.Complete();
 
             if (isImmediate)
             {
-                transform.localScale = closingAnimation.scaleSettings.endValue;
+                _nodeCanvas.transform.localScale = closingAnimation.scaleSettings.endValue;
                 gameObject.SetActive(false);
                 OnClosed();
                 return;
             }
 
-            transform.localScale = closingAnimation.scaleSettings.startValue;
+            _nodeCanvas.transform.localScale = closingAnimation.scaleSettings.startValue;
 
-            var sequence = Sequence.Create()
-                .Group(Tween.Scale(transform, closingAnimation.scaleSettings));
+            _hideTween = Tween.Scale(_nodeCanvas.transform, closingAnimation.scaleSettings);
 
-            await sequence.ToUniTask();
+            await _hideTween.ToUniTask();
             gameObject.SetActive(false);
             OnClosed();
         }

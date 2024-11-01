@@ -18,9 +18,13 @@ namespace Game.Scripts.Core.Panel
             _panelParent = panelParent;
         }
 
-        public async UniTask LoadPanel<T>() where T : PanelBase
+        public async UniTask LoadPanel<T>() where T : NodePanel
         {
             var panelKey = typeof(T);
+            if (_loadedPanels.ContainsKey(panelKey))
+            {
+                Debug.LogError($"Panel {panelKey} is already loaded");
+            }
             var panelHandle = Addressables.LoadAssetAsync<GameObject>(typeof(T).Name);
             await panelHandle;
             var panelObject = Object.Instantiate(panelHandle.Result, _panelParent);
@@ -31,12 +35,12 @@ namespace Game.Scripts.Core.Panel
             });
         }
         
-        public void UnloadPanel<T>() where T : PanelBase
+        public void UnloadPanel<T>() where T : NodePanel
         {
             var panelKey = typeof(T);
             if (!_loadedPanels.TryGetValue(panelKey, out var panelReference))
             {
-                Debug.LogError($"Panel {panelKey} is not found");
+                Debug.LogError($"Panel {panelKey} is not loaded can't unload");
                 return;
             }
 
@@ -45,12 +49,12 @@ namespace Game.Scripts.Core.Panel
             _loadedPanels.Remove(panelKey);
         }
         
-        public async UniTask<T> ShowPanel<T>(bool isImmediate = false) where T : PanelBase
+        public async UniTask<T> ShowPanel<T>(bool isImmediate = false) where T : NodePanel
         {
             var panelKey = typeof(T);
             if (!_loadedPanels.TryGetValue(panelKey, out var panelReference))
             {
-                Debug.LogError($"Panel {panelKey} is not found");
+                Debug.LogError($"Panel {panelKey} is not loaded can't show");
                 return null;
                 
             }
@@ -60,12 +64,12 @@ namespace Game.Scripts.Core.Panel
             return panel;
         }
 
-        public async UniTask<T> HidePanel<T>(bool isImmediate = false) where T : PanelBase
+        public async UniTask<T> HidePanel<T>(bool isImmediate = false) where T : NodePanel
         {
             var panelKey = typeof(T);
             if (!_loadedPanels.TryGetValue(panelKey, out var panelReference))
             {
-                Debug.LogError($"Panel {panelKey} is not found");
+                Debug.LogError($"Panel {panelKey} is not loaded can't hide");
                 return null;
             }
 
@@ -74,7 +78,7 @@ namespace Game.Scripts.Core.Panel
             return panel;
         }
 
-        public T GetPanel<T>() where T : PanelBase
+        public T GetPanel<T>() where T : NodePanel
         {
             var panelKey = typeof(T);
             if (_loadedPanels.TryGetValue(panelKey, out var panelReference))
