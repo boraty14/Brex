@@ -10,14 +10,10 @@ namespace Game.Scripts.Core.Panel
     public abstract class PanelBase : MonoBehaviour
     {
         [SerializeField] private PanelAnimations _panelAnimations = new();
-        public Canvas Canvas { get; private set; }
-        public CanvasGroup CanvasGroup { get; private set; }
         public RectTransform RectTransform { get; private set; }
 
         private void Awake()
         {
-            Canvas = GetComponent<Canvas>();
-            CanvasGroup = GetComponent<CanvasGroup>();
             RectTransform = GetComponent<RectTransform>();
         }
 
@@ -34,21 +30,17 @@ namespace Game.Scripts.Core.Panel
             }
 
             Tween.CompleteAll(transform);
-            Tween.CompleteAll(CanvasGroup);
 
             if (isImmediate)
             {
                 transform.localScale = openingAnimation.scaleSettings.endValue;
-                CanvasGroup.alpha = openingAnimation.alphaSettings.endValue;
                 OnOpened();
                 return;
             }
 
             transform.localScale = openingAnimation.scaleSettings.startValue;
-            CanvasGroup.alpha = openingAnimation.alphaSettings.startValue;
 
             var sequence = Sequence.Create()
-                .Group(Tween.Alpha(CanvasGroup, openingAnimation.alphaSettings))
                 .Group(Tween.Scale(transform, openingAnimation.scaleSettings));
 
             await sequence.ToUniTask();
@@ -68,22 +60,18 @@ namespace Game.Scripts.Core.Panel
             }
 
             Tween.CompleteAll(transform);
-            Tween.CompleteAll(CanvasGroup);
 
             if (isImmediate)
             {
                 transform.localScale = closingAnimation.scaleSettings.endValue;
-                CanvasGroup.alpha = closingAnimation.alphaSettings.endValue;
                 gameObject.SetActive(false);
                 OnClosed();
                 return;
             }
 
             transform.localScale = closingAnimation.scaleSettings.startValue;
-            CanvasGroup.alpha = closingAnimation.alphaSettings.startValue;
 
             var sequence = Sequence.Create()
-                .Group(Tween.Alpha(CanvasGroup, closingAnimation.alphaSettings))
                 .Group(Tween.Scale(transform, closingAnimation.scaleSettings));
 
             await sequence.ToUniTask();
